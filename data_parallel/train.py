@@ -26,6 +26,7 @@ parser.add_argument('--num_worker', type=int, default=4, help='')
 parser.add_argument("--gpu_devices", type=int, nargs='+', default=None, help="")
 args = parser.parse_args()
 
+# gpu를 2장 이상일때는 아래 코드를 더 추가해줘야 된다.
 gpu_devices = ','.join([str(id) for id in args.gpu_devices])
 os.environ["CUDA_VISIBLE_DEVICES"] = gpu_devices
 
@@ -55,6 +56,7 @@ def main():
     print('==> Making model..')
 
     net = pyramidnet()
+    # gpu를 2장 이상일때는 아래 코드를 더 추가해줘야 된다.
     net = nn.DataParallel(net)
     net = net.to(device)
     num_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
